@@ -47,44 +47,44 @@ public class lpms extends JFrame implements ActionListener
 	TopPanel.setMinimumSize(new java.awt.Dimension(ScreenWidth, 60));
 
 	/* Build the text box label */
-	Label1 = new JLabel("Current Step (Ia): ");
-	Label1.setLabelFor(Current);
-	gbc = new GridBagConstraints();
-	gbc.gridx = 0;
-	gbc.gridy = 0;
-	TopPanel.add(Label1, gbc);
+	//Label1 = new JLabel("Current Step (Ia): ");
+	//Label1.setLabelFor(Current);
+	//gbc = new GridBagConstraints();
+	//gbc.gridx = 0;
+	//gbc.gridy = 0;
+	//TopPanel.add(Label1, gbc);
 
 	/* Setup the text box */
-	Current = new JTextField(16);
-	Current.setPreferredSize(new java.awt.Dimension(60, 18));
-	Current.setMinimumSize(new java.awt.Dimension(60, 18));
-	Current.setEnabled(true);
-	Current.addActionListener(this);
-	Current.setActionCommand("Current");
-	gbc = new GridBagConstraints();
-	gbc.gridx = 1;
-	gbc.gridy = 0;
-	TopPanel.add(Current, gbc);
+	//Current = new JTextField(16);
+	//Current.setPreferredSize(new java.awt.Dimension(60, 18));
+	//Current.setMinimumSize(new java.awt.Dimension(60, 18));
+	//Current.setEnabled(true);
+	//Current.addActionListener(this);
+	//Current.setActionCommand("Current");
+	//gbc = new GridBagConstraints();
+	//gbc.gridx = 1;
+	//gbc.gridy = 0;
+	//TopPanel.add(Current, gbc);
 
 	/* Build the text box label */
-	Label2 = new JLabel("Time Step (Tm): ");
-	Label2.setLabelFor(Time);
-	gbc = new GridBagConstraints();
-	gbc.gridx = 2;
-	gbc.gridy = 0;
-	TopPanel.add(Label2, gbc);
+	//Label2 = new JLabel("Time Step (Tm): ");
+	//Label2.setLabelFor(Time);
+	//gbc = new GridBagConstraints();
+	//gbc.gridx = 2;
+	//gbc.gridy = 0;
+	//TopPanel.add(Label2, gbc);
 
 	/* Setup the text box */
-	Time = new JTextField(16);
-	Time.setPreferredSize(new java.awt.Dimension(60, 18));
-	Time.setMinimumSize(new java.awt.Dimension(60, 18));
-	Time.setEnabled(true);
-	Time.addActionListener(this);
-	Time.setActionCommand("Time");
-	gbc = new GridBagConstraints();
-	gbc.gridx = 3;
-	gbc.gridy = 0;
-	TopPanel.add(Time, gbc);
+	//Time = new JTextField(16);
+	//Time.setPreferredSize(new java.awt.Dimension(60, 18));
+	//Time.setMinimumSize(new java.awt.Dimension(60, 18));
+	//Time.setEnabled(true);
+	//Time.addActionListener(this);
+	//Time.setActionCommand("Time");
+	//gbc = new GridBagConstraints();
+	//gbc.gridx = 3;
+	//gbc.gridy = 0;
+	//TopPanel.add(Time, gbc);
 	/* Setup the button */
 	
 	Process = new JButton("Process");
@@ -142,7 +142,7 @@ public class lpms extends JFrame implements ActionListener
     menuBar.add(menu);
 
     /* Add the items to each main menu element */
-    JMenuItem item1 = new JMenuItem("sensorP" + " Help");
+    JMenuItem item1 = new JMenuItem("LPMS" + " Help");
     item1.addActionListener(this);
     menu.add(item1);
 
@@ -223,7 +223,7 @@ public class lpms extends JFrame implements ActionListener
   {
     String Command = e.getActionCommand();
 
-    if(Command.equals("lpms" + " Help"))
+    if(Command.equals("LPMS" + " Help"))
     {
       JOptionPane.showMessageDialog(this, "Help system not yet " +
                                     "implemented!",
