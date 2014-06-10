@@ -1,5 +1,4 @@
 /*
-/*
  * @(#)FBInit.java
  *
  * Copyright (c) 2014-2014 Firebird Sensors, Inc. All Rights Reserved.

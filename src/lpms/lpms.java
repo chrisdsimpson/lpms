@@ -1,10 +1,10 @@
 /*
- * @(#)sensorP.java
+ * @(#)lpms.java
  *
  * Copyright (c) 2014-2014 Firebird Sensors, Inc. All Rights Reserved.
  *
  * @author  Christopher D. Simpson
- * @version 1.00 03/05/14
+ * @version 1.00 06/10/14
  *
  * This class is the base class for the power measurement app.
  */
@@ -14,14 +14,15 @@ package lpms;
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
+import java.io.*;
 //import com.firebird.sensorP.*;
 
 
 public class lpms extends JFrame implements ActionListener
 {
-
-  /**
-   * sensorP constructor for LPCS development.
+    
+   /**
+   * lpms constructor for LPCS development.
    */
   public lpms()
   {
@@ -141,6 +142,11 @@ public class lpms extends JFrame implements ActionListener
     JMenu menu = new JMenu("System");
     menuBar.add(menu);
 
+    /* Add the file dialog */
+    JMenuItem item0 = new JMenuItem("File");
+    item0.addActionListener(this);
+    menu.add(item0);
+    
     /* Add the items to each main menu element */
     JMenuItem item1 = new JMenuItem("LPMS" + " Help");
     item1.addActionListener(this);
@@ -223,6 +229,26 @@ public class lpms extends JFrame implements ActionListener
   {
     String Command = e.getActionCommand();
 
+    if(Command.equals("File"))
+    {
+      final JFileChooser fc = new JFileChooser();	
+      int returnVal = fc.showOpenDialog(this);	
+    
+      if (returnVal == JFileChooser.APPROVE_OPTION) 
+      {
+        File file = fc.getSelectedFile();
+        
+        //This is where a real application would open the file.
+        //log.append("Opening: " + file.getName() + "." + newline);
+        lpmslog.log("warning","Opening file " + file.getName() + ".");      
+      } 
+      else 
+      {
+        //log.append("Open command cancelled by user." + newline);
+    	lpmslog.log("warning","Open command cancelled by user.");
+      }
+    }
+    
     if(Command.equals("LPMS" + " Help"))
     {
       JOptionPane.showMessageDialog(this, "Help system not yet " +
@@ -230,10 +256,12 @@ public class lpms extends JFrame implements ActionListener
                                     FBAppInfo.getAppName(),
                                     JOptionPane.INFORMATION_MESSAGE);
     }
+    
     if(Command.equals("About"))
     {
       FBAbout about = new FBAbout();
     }
+    
     if(Command.equals("Exit"))
     {
       System.exit(0);
@@ -298,6 +326,8 @@ public class lpms extends JFrame implements ActionListener
   JButton NewButton;
  
   /* Vars */
+  FBLogging lpmslog;
+  static private final String newline = "\n";
   String StatusStr = "  Status: ";
   int ScreenWidth = 640;
 
