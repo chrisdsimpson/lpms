@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 import javax.swing.JOptionPane;
 	
 public class FBLogging
@@ -40,7 +41,7 @@ public class FBLogging
   }
 
   /**
-   * Performes the INSERT statement to the LPCSLog tabel of the database.
+   * Performs the INSERT statement to the LPCSLog table of the database.
    * @param Level Passed from LogMsg method and indicates the log level.
    * @param Message Passed from LogMsg method and contains the log message.
    */
@@ -91,8 +92,6 @@ public class FBLogging
     //System.out.println("Current Date: " + curdate);
     //System.out.println("Current Time: " + curtime);
     //System.out.println("SQL: " + SQLStr);
-
-
     
   }
 
@@ -107,30 +106,44 @@ public class FBLogging
   public static void log(Exception ex, String level, String msg)
   {
     FileHandler fh = null;
-    
+        
     try 
     {
-      fh = new FileHandler("lpmslog.xml",true);
+      /* This block configure the logger with handler and formatter */
+      fh = new FileHandler("lpms.log", true);
       logger.addHandler(fh);
+      logger.setLevel(Level.ALL);
+      SimpleFormatter formatter = new SimpleFormatter();
+      fh.setFormatter(formatter);
+            
     
       switch (level) 
       {
         case "severe":
           logger.log(Level.SEVERE, msg, ex);
+          
           if(!msg.equals(""))
-             JOptionPane.showMessageDialog(null,msg,"Error", JOptionPane.ERROR_MESSAGE);
-        break;
+          {   
+        	JOptionPane.showMessageDialog(null, msg, "Error", JOptionPane.ERROR_MESSAGE);
+          }
+       	break;
       
         case "warning":
           logger.log(Level.WARNING, msg, ex);
+          
           if(!msg.equals(""))
-            JOptionPane.showMessageDialog(null,msg, "Warning", JOptionPane.WARNING_MESSAGE);
+          {  
+        	JOptionPane.showMessageDialog(null, msg, "Warning", JOptionPane.WARNING_MESSAGE);
+          }
         break;
         
         case "info":
           logger.log(Level.INFO, msg, ex);
-            if(!msg.equals(""))
-              JOptionPane.showMessageDialog(null,msg, "Info", JOptionPane.INFORMATION_MESSAGE);
+           
+          if(!msg.equals(""))
+          {    
+        	JOptionPane.showMessageDialog(null, msg, "Info", JOptionPane.INFORMATION_MESSAGE);
+          }       
         break;
      
         case "config":
@@ -160,77 +173,11 @@ public class FBLogging
     } 
     finally
     {
-      if(fh!=null)fh.close();
+      if(fh!=null)
+        fh.close();
     }
   }
-  
-  /**
-   * log Method 
-   * enable to log all exceptions to a file and display user message on demand
-   * @param level
-   * @param msg 
-   */
-  public static void log(String level, String msg)
-  {
-    FileHandler fh = null;
-    
-    try 
-    {
-      fh = new FileHandler("lpmslog.xml",true);
-      logger.addHandler(fh);
-    
-      switch (level) 
-      {
-        case "severe":
-          logger.log(Level.SEVERE, msg);
-          if(!msg.equals(""))
-             JOptionPane.showMessageDialog(null,msg,"Error", JOptionPane.ERROR_MESSAGE);
-        break;
-      
-        case "warning":
-          logger.log(Level.WARNING, msg);
-          if(!msg.equals(""))
-            JOptionPane.showMessageDialog(null,msg, "Warning", JOptionPane.WARNING_MESSAGE);
-        break;
-        
-        case "info":
-          logger.log(Level.INFO, msg);
-            if(!msg.equals(""))
-              JOptionPane.showMessageDialog(null,msg, "Info", JOptionPane.INFORMATION_MESSAGE);
-        break;
-     
-        case "config":
-          logger.log(Level.CONFIG, msg);
-        break;
-        
-        case "fine":
-          logger.log(Level.FINE, msg);
-        break;
-        
-        case "finer":
-          logger.log(Level.FINER, msg);
-        break;
-        
-        case "finest":
-          logger.log(Level.FINEST, msg);
-        break;
-        
-        default:
-          logger.log(Level.CONFIG, msg);
-        break;
-      }
-    } 
-    catch (IOException | SecurityException ex1) 
-    {
-      logger.log(Level.SEVERE, null, ex1);
-    } 
-    finally
-    {
-      if(fh!=null)fh.close();
-    }
-  }
-  
-  
+   
   protected static final Logger logger=Logger.getLogger("FBLOG");
   static final String logfile = "com/firebird/lpms/lpms.log";
   

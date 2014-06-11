@@ -12,16 +12,16 @@
 package lpms;
 
 import java.awt.*;
+
 import javax.swing.*;
+
 import java.awt.event.*;
 import java.io.*;
-//import com.firebird.sensorP.*;
-
 
 public class lpms extends JFrame implements ActionListener
 {
     
-   /**
+  /**
    * lpms constructor for LPCS development.
    */
   public lpms()
@@ -147,6 +147,11 @@ public class lpms extends JFrame implements ActionListener
     item0.addActionListener(this);
     menu.add(item0);
     
+    /* Add the Plot menu item */
+    JMenuItem item4 = new JMenuItem("Plot");
+    item4.addActionListener(this);
+    menu.add(item4);
+    
     /* Add the items to each main menu element */
     JMenuItem item1 = new JMenuItem("LPMS" + " Help");
     item1.addActionListener(this);
@@ -240,13 +245,29 @@ public class lpms extends JFrame implements ActionListener
         
         //This is where a real application would open the file.
         //log.append("Opening: " + file.getName() + "." + newline);
-        lpmslog.log("warning","Opening file " + file.getName() + ".");      
+        lpmslog.log(null, "info","Opening file " + file.getName() + ".");      
       } 
       else 
       {
         //log.append("Open command cancelled by user." + newline);
-    	lpmslog.log("warning","Open command cancelled by user.");
+    	lpmslog.log(null, "warning","Open command cancelled by user.");
       }
+    }
+    
+    if(Command.equals("Plot"))
+    {
+      /* Log the plot */
+      lpmslog.log(null, "info","Opening new plot."); 
+      
+      FBPlot newplot = new FBPlot();
+   	  newplot.plot();
+   	  
+      //JFrame f = new JFrame();
+      //f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+      //f.add(new FBPlot());
+      //f.setSize(400,400);
+      //f.setLocation(200,200);
+      //f.setVisible(true);	
     }
     
     if(Command.equals("LPMS" + " Help"))
