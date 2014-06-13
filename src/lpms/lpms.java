@@ -259,15 +259,8 @@ public class lpms extends JFrame implements ActionListener
       /* Log the plot */
       lpmslog.log(null, "info","Opening new plot."); 
       
-      FBPlot newplot = new FBPlot();
-   	  newplot.plot();
-   	  
-      //JFrame f = new JFrame();
-      //f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-      //f.add(new FBPlot());
-      //f.setSize(400,400);
-      //f.setLocation(200,200);
-      //f.setVisible(true);	
+      //FBGraph newplot = new FBGraph();
+      FBGraph.plot();
     }
     
     if(Command.equals("LPMS" + " Help"))
