@@ -151,7 +151,7 @@ public class FBGraph extends JPanel
     	JFrame frame = new JFrame("Laser Power");
         FBGraph panel = new FBGraph(30000);
         frame.getContentPane().add(panel, BorderLayout.CENTER);
-        frame.setBounds(200, 120, 600, 280);
+        frame.setBounds(200, 120, 1000, 480);
         frame.setVisible(true);
         panel.new DataGenerator(100).start();
     }
@@ -167,7 +167,7 @@ public class FBGraph extends JPanel
         JFrame frame = new JFrame("Laser Power");
         FBGraph panel = new FBGraph(30000);
         frame.getContentPane().add(panel, BorderLayout.CENTER);
-        frame.setBounds(200, 120, 600, 280);
+        frame.setBounds(200, 120, 1000, 580);
         frame.setVisible(true);
         panel.new DataGenerator(100).start();
 
