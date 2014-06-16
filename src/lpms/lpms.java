@@ -28,9 +28,9 @@ public class lpms extends JFrame implements ActionListener
   {
   
    	/* Get the command menu icon */
-	//this.setIconImage(Toolkit.
-	//                  getDefaultToolkit().
-	//                  getImage("firebird.gif"));
+	this.setIconImage(Toolkit.
+	                  getDefaultToolkit().
+	                  getImage("firebird.jpg"));
 
 	/* Load the application name and version on the title bar */
 	this.setTitle(FBAppInfo.getAppName() + " " +
@@ -224,9 +224,12 @@ public class lpms extends JFrame implements ActionListener
                              "06/10/14",                     /* Version/revision date */
                              cmdarg);                        /* Login name */
     
-	/* Create the form */
+    /* Display the LPCS splash screen for 5 seconds */
+    FBSplash splash = new FBSplash(5000);
+    
+    /* Create the form */
 	lpms mainframe = new lpms();
-	
+		
   }
 
   /* Process the messages from the menu items. */
