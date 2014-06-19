@@ -154,10 +154,7 @@ public class lpms extends JFrame implements ActionListener
     JMenuItem itemAPD2 = new JMenuItem("Save Power Data");
     itemAPD2.addActionListener(this);
     itemF1.add(itemAPD2);
-    
-    JMenuItem itemAPD3 = new JMenuItem("Open Power Data");
-    itemAPD3.addActionListener(this);
-    itemF1.add(itemAPD3);
+      
     
     /* Add the Plot menu item */
     JMenuItem itemF2= new JMenuItem("Upload Tables");
@@ -265,7 +262,36 @@ public class lpms extends JFrame implements ActionListener
   {
     String Command = e.getActionCommand();
 
-    if(Command.equals("File"))
+    if(Command.equals("Save Power Data"))
+    {
+      final JFileChooser fc = new JFileChooser();	
+      int returnVal = fc.showSaveDialog(this);	
+    
+      if (returnVal == JFileChooser.APPROVE_OPTION) 
+      {
+        File file = fc.getSelectedFile();
+        
+        //This is where a real application would open the file.
+        //log.append("Opening: " + file.getName() + "." + newline);
+        lpmslog.log(null, "info","Saving file " + file.getName() + ".");      
+      } 
+      else 
+      {
+        //log.append("Open command cancelled by user." + newline);
+    	lpmslog.log(null, "warning","Save command cancelled by user.");
+      }
+    }
+    
+    if(Command.equals("Plot Power Data"))
+    {
+      /* Log the plot */
+      lpmslog.log(null, "info","Opening new plot."); 
+      
+      //FBGraph newplot = new FBGraph();
+      FBGraph.plot();
+    }
+    
+    if(Command.equals("Upload Tables"))
     {
       final JFileChooser fc = new JFileChooser();	
       int returnVal = fc.showOpenDialog(this);	
@@ -285,14 +311,28 @@ public class lpms extends JFrame implements ActionListener
       }
     }
     
-    if(Command.equals("Plot"))
+    
+    if(Command.equals("Upload Meter Firmware"))
     {
-      /* Log the plot */
-      lpmslog.log(null, "info","Opening new plot."); 
-      
-      //FBGraph newplot = new FBGraph();
-      FBGraph.plot();
+      final JFileChooser fc = new JFileChooser();	
+      int returnVal = fc.showOpenDialog(this);	
+    
+      if (returnVal == JFileChooser.APPROVE_OPTION) 
+      {
+        File file = fc.getSelectedFile();
+        
+        //This is where a real application would open the file.
+        //log.append("Opening: " + file.getName() + "." + newline);
+        lpmslog.log(null, "info","Opening file " + file.getName() + ".");      
+      } 
+      else 
+      {
+        //log.append("Open command cancelled by user." + newline);
+    	lpmslog.log(null, "warning","Open command cancelled by user.");
+      }
     }
+    
+    
     
     if(Command.equals("LPMS" + " Help"))
     {
