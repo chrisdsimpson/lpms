@@ -139,34 +139,62 @@ public class lpms extends JFrame implements ActionListener
     JMenuBar menuBar = new JMenuBar();
 
     /* Add the menu bar items */
-    JMenu menu = new JMenu("System");
-    menuBar.add(menu);
-
-    /* Add the file dialog */
-    JMenuItem item0 = new JMenuItem("File");
-    item0.addActionListener(this);
-    menu.add(item0);
+    JMenu menuF = new JMenu("File");
+    menuBar.add(menuF);
+    
+    /* Add the Aquire menu */
+    JMenuItem itemF1 = new JMenu("Aquuire Power Data");
+    //itemF1.addActionListener(this);
+    menuF.add(itemF1);
+    
+    JMenuItem itemAPD1 = new JMenuItem("Plot Power Data");
+    itemAPD1.addActionListener(this);
+    itemF1.add(itemAPD1);
+    
+    JMenuItem itemAPD2 = new JMenuItem("Save Power Data");
+    itemAPD2.addActionListener(this);
+    itemF1.add(itemAPD2);
+    
+    JMenuItem itemAPD3 = new JMenuItem("Open Power Data");
+    itemAPD3.addActionListener(this);
+    itemF1.add(itemAPD3);
     
     /* Add the Plot menu item */
-    JMenuItem item4 = new JMenuItem("Plot");
-    item4.addActionListener(this);
-    menu.add(item4);
+    JMenuItem itemF2= new JMenuItem("Upload Tables");
+    itemF2.addActionListener(this);
+    menuF.add(itemF2);
+        
+    /* Add the Plot menu item */
+    JMenuItem itemF3 = new JMenuItem("Upload Meter Firmware");
+    itemF3.addActionListener(this);
+    menuF.add(itemF3);
+    
+    menuF.addSeparator();
+
+    JMenuItem itemF10 = new JMenuItem("Exit");
+    itemF10.addActionListener(this);
+    menuF.add(itemF10);
+    
+    
+    /* Add the meter control menu items */
+    JMenu menuM = new JMenu("Meter Control");
+    menuM.setEnabled(false);
+    menuBar.add(menuM);
+   
+    
+    /* Add the menu bar items */
+    JMenu menuH = new JMenu("Help");
+    menuBar.add(menuH);
     
     /* Add the items to each main menu element */
-    JMenuItem item1 = new JMenuItem("LPMS" + " Help");
-    item1.addActionListener(this);
-    menu.add(item1);
+    JMenuItem itemH1 = new JMenuItem("LPMS" + " Help");
+    itemH1.addActionListener(this);
+    menuH.add(itemH1);
 
-    JMenuItem item2 = new JMenuItem("About");
-    item2.addActionListener(this);
-    menu.add(item2);
-
-    menu.addSeparator();
-
-    JMenuItem item3 = new JMenuItem("Exit");
-    item3.addActionListener(this);
-    menu.add(item3);
-
+    JMenuItem itemH2 = new JMenuItem("About");
+    itemH2.addActionListener(this);
+    menuH.add(itemH2);
+    
     /* Add the menu to the main window */
     this.setJMenuBar(menuBar);
 
