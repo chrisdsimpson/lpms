@@ -37,7 +37,7 @@ public class lpms extends JFrame implements ActionListener
 	/* Get the command menu icon */
 	this.setIconImage(Toolkit.
 	                  getDefaultToolkit().
-	                  getImage("firebird.jpg"));
+	                  getImage("lasersign_04.jpg"));
 
 	/* Load the application name and version on the title bar */
 	this.setTitle(FBAppInfo.getAppName() + " " +
