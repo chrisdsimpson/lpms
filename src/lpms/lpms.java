@@ -17,6 +17,11 @@ import javax.swing.*;
 
 import java.awt.event.*;
 import java.io.*;
+import javax.swing.ImageIcon;
+
+import jssc.SerialPort;
+import jssc.SerialPortException;
+
 
 public class lpms extends JFrame implements ActionListener
 {
@@ -27,7 +32,9 @@ public class lpms extends JFrame implements ActionListener
   public lpms()
   {
   
-   	/* Get the command menu icon */
+    this.FirebirdIcon = new ImageIcon("firebird.jpg");
+	  
+	/* Get the command menu icon */
 	this.setIconImage(Toolkit.
 	                  getDefaultToolkit().
 	                  getImage("firebird.jpg"));
@@ -142,29 +149,33 @@ public class lpms extends JFrame implements ActionListener
     JMenu menuF = new JMenu("File");
     menuBar.add(menuF);
     
-    /* Add the Aquire menu */
-    JMenuItem itemF1 = new JMenu("Aquuire Power Data");
-    //itemF1.addActionListener(this);
+    JMenuItem itemF1 = new JMenuItem("Connect Meter");
+    itemF1.addActionListener(this);
     menuF.add(itemF1);
+    
+    /* Add the Acquire menu */
+    JMenuItem itemF2 = new JMenu("Acquire Power Data");
+    //itemF2.addActionListener(this);
+    menuF.add(itemF2);
     
     JMenuItem itemAPD1 = new JMenuItem("Plot Power Data");
     itemAPD1.addActionListener(this);
-    itemF1.add(itemAPD1);
+    itemF2.add(itemAPD1);
     
     JMenuItem itemAPD2 = new JMenuItem("Save Power Data");
     itemAPD2.addActionListener(this);
-    itemF1.add(itemAPD2);
+    itemF2.add(itemAPD2);
       
     
     /* Add the Plot menu item */
-    JMenuItem itemF2= new JMenuItem("Upload Tables");
-    itemF2.addActionListener(this);
-    menuF.add(itemF2);
-        
-    /* Add the Plot menu item */
-    JMenuItem itemF3 = new JMenuItem("Upload Meter Firmware");
+    JMenuItem itemF3= new JMenuItem("Upload Tables");
     itemF3.addActionListener(this);
     menuF.add(itemF3);
+        
+    /* Add the Plot menu item */
+    JMenuItem itemF4 = new JMenuItem("Upload Meter Firmware");
+    itemF4.addActionListener(this);
+    menuF.add(itemF4);
     
     menuF.addSeparator();
 
@@ -217,6 +228,8 @@ public class lpms extends JFrame implements ActionListener
       public void windowClosing(WindowEvent evt)
       {
         /* Add any cleanup code here */
+    	System.exit(0);
+      	
       }
       public void windowOpened(WindowEvent evt)
       {
@@ -262,6 +275,31 @@ public class lpms extends JFrame implements ActionListener
   {
     String Command = e.getActionCommand();
 
+    if(Command.equals("Connect Meter"))
+    {
+      Object[] possibilities = {"COM1", "COM2", "COM3", "USB1", "USB2"};
+      
+      String s = (String)JOptionPane.showInputDialog(frame,
+    	                                             "Select the Meter USB port:\n",
+    	                                             "Attach Meter",
+    	                                             JOptionPane.PLAIN_MESSAGE,
+    	                                             FirebirdIcon,
+    	                                             possibilities,
+    	                                             "COM3");
+
+      //If a string was returned, say so.
+      if((s != null) && (s.length() > 0)) 
+      {
+    	//setLabel("Green eggs and... " + s + "!");
+    	return;
+      }
+
+      //If you're here, the return value was null/empty.
+      //setLabel("Come on, finish the sentence!");	
+    	
+    	
+    }
+    
     if(Command.equals("Save Power Data"))
     {
       final JFileChooser fc = new JFileChooser();	
@@ -274,6 +312,50 @@ public class lpms extends JFrame implements ActionListener
         //This is where a real application would open the file.
         //log.append("Opening: " + file.getName() + "." + newline);
         lpmslog.log(null, "info","Saving file " + file.getName() + ".");      
+       
+       
+       /* Fire up the comm port */
+        try 
+        {
+		  
+          if(Serial == null)
+          {
+        	(Serial= new FBSerial()).connect("COM3");
+        	FBSerial.SerialWriter("*RST");
+  		    FBSerial.SerialWriter("*TST");
+          }
+		            
+		  FBSerial.SerialWriter("*IDN?");
+		  		  
+		  try 
+		  {
+			Thread.sleep(250);
+		  } 
+		  catch(InterruptedException ie) 
+		  {
+			ie.printStackTrace();  
+		  }
+		  
+		  
+		  String LPMVersion = FBSerial.getReceiveBuffer();
+		  
+		  if(LPMVersion != null)
+		  {
+		    			
+			LPMVersion = LPMVersion.replaceAll("(\\r|\\n)", "").trim();
+			
+			/* Update the status bar with the meter version */
+	        StatusBar.setText(StatusStr + " "
+	             	                    + "Connected to: " 
+	                                    + "[" + LPMVersion.toString() + "]");
+	 	  }
+        } 
+        catch(Exception e1) 
+        {
+		  e1.printStackTrace();
+		}
+        
+        
       } 
       else 
       {
@@ -286,6 +368,7 @@ public class lpms extends JFrame implements ActionListener
     {
       /* Log the plot */
       lpmslog.log(null, "info","Opening new plot."); 
+            
       
       //FBGraph newplot = new FBGraph();
       FBGraph.plot();
@@ -361,33 +444,58 @@ public class lpms extends JFrame implements ActionListener
         /* Set the button color for processing */
         Process.setBackground(Color.RED);
       
-        /* Get and validate the Current and Time fields */
-        String currentval = Current.getText();
-        String timeval = Time.getText();
-      
+        SerialPort serialPort = new SerialPort("COM3");
+        try 
+        {
+          /* Open serial port */
+          serialPort.openPort();
+          
+          /* Set params. Also you can set params by this string: serialPort.setParams(9600, 8, 1, 0); */
+          serialPort.setParams(SerialPort.BAUDRATE_115200, 
+                               SerialPort.DATABITS_8,
+                               SerialPort.STOPBITS_1,
+                               SerialPort.PARITY_NONE);  
+          
+           
+          
+          /* Write data to port */
+          serialPort.writeBytes("*RST\r\n".getBytes());
+          serialPort.writeBytes("*IDN?\r\n".getBytes());
+          
+          /* Read the serial port */
+          byte[] buffer = serialPort.readBytes(10);
+          System.out.print(new String(buffer));
+          
+          /* Close the port */
+          serialPort.closePort();
+        }
+        catch(SerialPortException ex) 
+        {
+          System.out.println(ex);
+        }
+     
         /* Update the status bar */
-        StatusBar.setText(StatusStr + " "
-        		                    + "Running test with " 
-                                    + "Current step [" + currentval.toString()+ "] Amps "
-                                    + "and "
-                                    + "Time step [" + timeval.toString() + "] Minutes");
+        //StatusBar.setText(StatusStr + " "
+        //		                    + "Running test with " 
+        //                            + "Current step [" + currentval.toString()+ "] Amps "
+        //                            + "and "
+        //                            + "Time step [" + timeval.toString() + "] Minutes");
+      
+        
       }
       else
       {
     	/* Set the button color for processing */
         Process.setBackground(Color.GREEN);
-        
-        /* Get and validate the Current and Time fields */
-        Current.setText("");
-        Time.setText("");
-        
+                
         /* Update the status bar */
         StatusBar.setText(StatusStr);  
       }
     }
     
-    /* Other menu commands */
+    /* Other commands */
   }
+   
 
   
   /* Controls */
@@ -411,6 +519,9 @@ public class lpms extends JFrame implements ActionListener
   JButton NewButton;
  
   /* Vars */
+  static FBSerial Serial = null;
+  ImageIcon FirebirdIcon;
+  
   FBLogging lpmslog;
   static private final String newline = "\n";
   String StatusStr = "  Status: ";
