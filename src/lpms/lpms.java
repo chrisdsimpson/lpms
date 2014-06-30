@@ -19,14 +19,16 @@ import java.awt.event.*;
 import java.io.*;
 import javax.swing.ImageIcon;
 
-import jssc.SerialPort;
-import jssc.SerialPortException;
-
 
 public class lpms extends JFrame implements ActionListener
 {
     
   /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	/**
    * lpms constructor for LPCS development.
    */
   public lpms()
@@ -34,112 +36,112 @@ public class lpms extends JFrame implements ActionListener
   
     this.FirebirdIcon = new ImageIcon("firebird.jpg");
 	  
-	/* Get the command menu icon */
-	this.setIconImage(Toolkit.
-	                  getDefaultToolkit().
-	                  getImage("lasersign_04.jpg"));
+	  /* Get the command menu icon */
+	  this.setIconImage(Toolkit.
+	                    getDefaultToolkit().
+	                    getImage("lasersign_04.jpg"));
 
-	/* Load the application name and version on the title bar */
-	this.setTitle(FBAppInfo.getAppName() + " " +
-	              FBAppInfo.getAppVersionString());
+	  /* Load the application name and version on the title bar */
+	  this.setTitle(FBAppInfo.getAppName() + " " +
+	                FBAppInfo.getAppVersionString());
 
 	 
-	getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), 1));
-	GridBagConstraints gbc;
+	  getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), 1));
+	  GridBagConstraints gbc;
 
-	/* Get the grid info to setup the screen layout */
-	TopPanel = new JPanel();
-	TopPanel.setLayout(new GridBagLayout());
-	TopPanel.setPreferredSize(new java.awt.Dimension(ScreenWidth, 60));
-	TopPanel.setBorder(new javax.swing.border.BevelBorder(0));
-	TopPanel.setMinimumSize(new java.awt.Dimension(ScreenWidth, 60));
+	  /* Get the grid info to setup the screen layout */
+	  TopPanel = new JPanel();
+	  TopPanel.setLayout(new GridBagLayout());
+	  TopPanel.setPreferredSize(new java.awt.Dimension(ScreenWidth, 60));
+	  TopPanel.setBorder(new javax.swing.border.BevelBorder(0));
+	  TopPanel.setMinimumSize(new java.awt.Dimension(ScreenWidth, 60));
 
-	/* Build the text box label */
-	//Label1 = new JLabel("Current Step (Ia): ");
-	//Label1.setLabelFor(Current);
-	//gbc = new GridBagConstraints();
-	//gbc.gridx = 0;
-	//gbc.gridy = 0;
-	//TopPanel.add(Label1, gbc);
+	  /* Build the text box label */
+	  //Label1 = new JLabel("Current Step (Ia): ");
+	  //Label1.setLabelFor(Current);
+	  //gbc = new GridBagConstraints();
+	  //gbc.gridx = 0;
+	  //gbc.gridy = 0;
+	  //TopPanel.add(Label1, gbc);
 
-	/* Setup the text box */
-	//Current = new JTextField(16);
-	//Current.setPreferredSize(new java.awt.Dimension(60, 18));
-	//Current.setMinimumSize(new java.awt.Dimension(60, 18));
-	//Current.setEnabled(true);
-	//Current.addActionListener(this);
-	//Current.setActionCommand("Current");
-	//gbc = new GridBagConstraints();
-	//gbc.gridx = 1;
-	//gbc.gridy = 0;
-	//TopPanel.add(Current, gbc);
+	  /* Setup the text box */
+	  //Current = new JTextField(16);
+	  //Current.setPreferredSize(new java.awt.Dimension(60, 18));
+	  //Current.setMinimumSize(new java.awt.Dimension(60, 18));
+	  //Current.setEnabled(true);
+	  //Current.addActionListener(this);
+	  //Current.setActionCommand("Current");
+	  //gbc = new GridBagConstraints();
+	  //gbc.gridx = 1;
+	  //gbc.gridy = 0;
+	  //TopPanel.add(Current, gbc);
 
-	/* Build the text box label */
-	//Label2 = new JLabel("Time Step (Tm): ");
-	//Label2.setLabelFor(Time);
-	//gbc = new GridBagConstraints();
-	//gbc.gridx = 2;
-	//gbc.gridy = 0;
-	//TopPanel.add(Label2, gbc);
+	  /* Build the text box label */
+  	//Label2 = new JLabel("Time Step (Tm): ");
+	  //Label2.setLabelFor(Time);
+	  //gbc = new GridBagConstraints();
+	  //gbc.gridx = 2;
+	  //gbc.gridy = 0;
+	  //TopPanel.add(Label2, gbc);
 
-	/* Setup the text box */
-	//Time = new JTextField(16);
-	//Time.setPreferredSize(new java.awt.Dimension(60, 18));
-	//Time.setMinimumSize(new java.awt.Dimension(60, 18));
-	//Time.setEnabled(true);
-	//Time.addActionListener(this);
-	//Time.setActionCommand("Time");
-	//gbc = new GridBagConstraints();
-	//gbc.gridx = 3;
-	//gbc.gridy = 0;
-	//TopPanel.add(Time, gbc);
-	/* Setup the button */
+	  /* Setup the text box */
+	  //Time = new JTextField(16);
+	  //Time.setPreferredSize(new java.awt.Dimension(60, 18));
+	  //Time.setMinimumSize(new java.awt.Dimension(60, 18));
+  	//Time.setEnabled(true);
+	  //Time.addActionListener(this);
+	  //Time.setActionCommand("Time");
+	  //gbc = new GridBagConstraints();
+	  //gbc.gridx = 3;
+	  //gbc.gridy = 0;
+	  //TopPanel.add(Time, gbc);
+	  /* Setup the button */
 	
-	Process = new JButton("Process");
-	Process.setPreferredSize(new java.awt.Dimension(80, 18));
-	Process.setMinimumSize(new java.awt.Dimension(80, 18));
-	Process.setBackground(Color.GREEN);
-	Process.setText("Run");
-	Process.setEnabled(true);
-	Process.addActionListener(this);
-	Process.setActionCommand("Process");
-	gbc = new GridBagConstraints();
-	gbc.gridx = 4;
-	gbc.gridy = 0;
-	TopPanel.add(Process, gbc);
-	getContentPane().add(TopPanel);
+	  Process = new JButton("Process");
+	  Process.setPreferredSize(new java.awt.Dimension(80, 18));
+	  Process.setMinimumSize(new java.awt.Dimension(80, 18));
+	  Process.setBackground(Color.GREEN);
+	  Process.setText("Run");
+	  Process.setEnabled(true);
+	  Process.addActionListener(this);
+	  Process.setActionCommand("Process");
+	  gbc = new GridBagConstraints();
+	  gbc.gridx = 4;
+	  gbc.gridy = 0;
+	  TopPanel.add(Process, gbc);
+	  getContentPane().add(TopPanel);
 
-	/* Add the center panel for spacing */
-	CenterPanel = new JPanel();
-	CenterPanel.setLayout(new GridBagLayout());
-	CenterPanel.setPreferredSize(new java.awt.Dimension(ScreenWidth, 18));
-	//CenterPanel.setBorder(new javax.swing.border.BevelBorder(0));
-	CenterPanel.setMinimumSize(new java.awt.Dimension(ScreenWidth, 18));
-	getContentPane().add(CenterPanel);
+	  /* Add the center panel for spacing */
+	  CenterPanel = new JPanel();
+	  CenterPanel.setLayout(new GridBagLayout());
+	  CenterPanel.setPreferredSize(new java.awt.Dimension(ScreenWidth, 18));
+	  //CenterPanel.setBorder(new javax.swing.border.BevelBorder(0));
+	  CenterPanel.setMinimumSize(new java.awt.Dimension(ScreenWidth, 18));
+	  getContentPane().add(CenterPanel);
 
-	FinalBottomPanel = new JPanel();
-	FinalBottomPanel.setLayout(new java.awt.FlowLayout());
-	FinalBottomPanel.setPreferredSize(new java.awt.Dimension(ScreenWidth, 200));
-	getContentPane().add(FinalBottomPanel);
+	  FinalBottomPanel = new JPanel();
+	  FinalBottomPanel.setLayout(new java.awt.FlowLayout());
+	  FinalBottomPanel.setPreferredSize(new java.awt.Dimension(ScreenWidth, 200));
+	  getContentPane().add(FinalBottomPanel);
 
-	StatusPanel = new JPanel();
-	StatusPanel.setLayout(new GridBagLayout());
-	StatusPanel.setPreferredSize(new java.awt.Dimension(ScreenWidth, 18));
-	//StatusPanel.setBorder(new javax.swing.border.LineBorder(Color.gray));
-	//StatusPanel.setBorder(new javax.swing.border.BevelBorder(0));
-	StatusPanel.setMinimumSize(new java.awt.Dimension(ScreenWidth, 18));
+	  StatusPanel = new JPanel();
+	  StatusPanel.setLayout(new GridBagLayout());
+	  StatusPanel.setPreferredSize(new java.awt.Dimension(ScreenWidth, 18));
+	  //StatusPanel.setBorder(new javax.swing.border.LineBorder(Color.gray));
+	  //StatusPanel.setBorder(new javax.swing.border.BevelBorder(0));
+	  StatusPanel.setMinimumSize(new java.awt.Dimension(ScreenWidth, 18));
 
-	StatusBar = new JLabel(StatusStr);
-	StatusBar.setPreferredSize(new java.awt.Dimension(ScreenWidth, 18));
-	StatusBar.setMinimumSize(new java.awt.Dimension(ScreenWidth, 18));
-	//StatusBar.setForeground(Color.RED);
-	gbc = new GridBagConstraints();
-	gbc.gridx = 0;
-	gbc.gridy = 0;
-	gbc.gridwidth = 2;
-	gbc.gridheight = 0;
-	StatusPanel.add(StatusBar, gbc);
-	getContentPane().add(StatusPanel);
+	  StatusBar = new JLabel(StatusStr);
+	  StatusBar.setPreferredSize(new java.awt.Dimension(ScreenWidth, 18));
+	  StatusBar.setMinimumSize(new java.awt.Dimension(ScreenWidth, 18));
+	  //StatusBar.setForeground(Color.RED);
+	  gbc = new GridBagConstraints();
+	  gbc.gridx = 0;
+	  gbc.gridy = 0;
+	  gbc.gridwidth = 2;
+	  gbc.gridheight = 0;
+	  StatusPanel.add(StatusBar, gbc);
+	  getContentPane().add(StatusPanel);
 
 	
     /* Create the menu bar. */
@@ -149,13 +151,14 @@ public class lpms extends JFrame implements ActionListener
     JMenu menuF = new JMenu("File");
     menuBar.add(menuF);
     
-    JMenuItem itemF1 = new JMenuItem("Connect Meter");
+    itemF1 = new JMenuItem("Connect Meter");
     itemF1.addActionListener(this);
     menuF.add(itemF1);
     
     /* Add the Acquire menu */
-    JMenuItem itemF2 = new JMenu("Acquire Power Data");
+    itemF2 = new JMenu("Acquire Power Data");
     //itemF2.addActionListener(this);
+    itemF2.setEnabled(false);
     menuF.add(itemF2);
     
     JMenuItem itemAPD1 = new JMenuItem("Plot Power Data");
@@ -168,13 +171,15 @@ public class lpms extends JFrame implements ActionListener
       
     
     /* Add the Plot menu item */
-    JMenuItem itemF3= new JMenuItem("Upload Tables");
+    itemF3= new JMenuItem("Upload Tables");
     itemF3.addActionListener(this);
+    itemF3.setEnabled(false);
     menuF.add(itemF3);
         
     /* Add the Plot menu item */
-    JMenuItem itemF4 = new JMenuItem("Upload Meter Firmware");
+    itemF4 = new JMenuItem("Upload Meter Firmware");
     itemF4.addActionListener(this);
+    itemF4.setEnabled(false);
     menuF.add(itemF4);
     
     menuF.addSeparator();
@@ -182,14 +187,12 @@ public class lpms extends JFrame implements ActionListener
     JMenuItem itemF10 = new JMenuItem("Exit");
     itemF10.addActionListener(this);
     menuF.add(itemF10);
-    
-    
+        
     /* Add the meter control menu items */
     JMenu menuM = new JMenu("Meter Control");
     menuM.setEnabled(false);
     menuBar.add(menuM);
-   
-    
+       
     /* Add the menu bar items */
     JMenu menuH = new JMenu("Help");
     menuBar.add(menuH);
@@ -207,7 +210,7 @@ public class lpms extends JFrame implements ActionListener
     this.setJMenuBar(menuBar);
 
     /* Get the screen info */
-	Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+	  Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 
     /* Set the size and position of the window */
     this.setSize(580, 360);
@@ -222,14 +225,14 @@ public class lpms extends JFrame implements ActionListener
 
     /* Application code... */  
 	  
-	/* Catch window closing events and also set initial focus */
+	  /* Catch window closing events and also set initial focus */
     this.addWindowListener(new WindowAdapter()
     {
       public void windowClosing(WindowEvent evt)
       {
         /* Add any cleanup code here */
     	System.exit(0);
-      	
+	
       }
       public void windowOpened(WindowEvent evt)
       {
@@ -266,38 +269,108 @@ public class lpms extends JFrame implements ActionListener
     FBSplash splash = new FBSplash(5000);
     
     /* Create the form */
-	lpms mainframe = new lpms();
+	  lpms mainframe = new lpms();
 		
   }
 
-  /* Process the messages from the menu items. */
+  /* Process the messages */
   public void actionPerformed(ActionEvent e)
   {
     String Command = e.getActionCommand();
 
     if(Command.equals("Connect Meter"))
     {
-      Object[] possibilities = {"COM1", "COM2", "COM3", "USB1", "USB2"};
-      
-      String s = (String)JOptionPane.showInputDialog(frame,
-    	                                             "Select the Meter USB port:\n",
-    	                                             "Attach Meter",
-    	                                             JOptionPane.PLAIN_MESSAGE,
-    	                                             FirebirdIcon,
-    	                                             possibilities,
-    	                                             "COM3");
+      /* If we acre not already connected to a meter */
+      if(!MeterConnectFlag)
+      {	  
+        /* Get the available serial ports */      
+    	  Object[] possibilities = FBSerial.getCommPorts().toArray();
+                
+        String s = (String)JOptionPane.showInputDialog(frame,
+    	                                               "Select the Meter USB port:\n",
+    	                                               "Attach Meter",
+    	                                               JOptionPane.PLAIN_MESSAGE,
+    	                                               FirebirdIcon,
+    	                                               possibilities,
+    	                                               " ");
 
-      //If a string was returned, say so.
-      if((s != null) && (s.length() > 0)) 
+        //If a port was selected */
+        if((s != null) && (s.length() > 0)) 
+        {
+    
+   	      /* Try to connect to the serial/comm port */
+          try 
+          {
+  		      if(Serial == null)
+            {
+          	  (Serial= new FBSerial()).connect(s);
+          	  FBSerial.SerialWriter("*RST");
+    	        FBSerial.SerialWriter("*TST");
+            }
+  		  
+  		      /* Clear the receive buffer */
+  		      FBSerial.setReceiveBuffer("");
+  		  
+  		      /* Write to the meter to get the version string back */
+  		      FBSerial.SerialWriter("*IDN?");
+  		  		  
+  		      try 
+  		      {
+  			      Thread.sleep(250);
+  		      } 
+  		      catch(InterruptedException ie) 
+  		      {
+  			      ie.printStackTrace();  
+  		      }
+  		  
+    		    String LPMVersion = FBSerial.getReceiveBuffer();
+  		  
+  		      if(LPMVersion != null && LPMVersion.contains("irebird"))
+  		      {
+  			
+  			      /* Set the meter connected flag */
+  			      MeterConnectFlag = true;
+  			  		
+  			      /* Enable and disable the menus based on the meter connection */
+  			      itemF1.setEnabled(false);
+  			      itemF2.setEnabled(true);
+  			      itemF3.setEnabled(true);
+  			      itemF4.setEnabled(true);
+  			      
+  			      LPMVersion = LPMVersion.replaceAll("(\\r|\\n)", "").trim();
+  			
+  			      /* Update the status bar with the meter version */
+  	          StatusBar.setText(StatusStr + " "
+  	               	                      + "Connected to: " 
+  	                                      + "[" + LPMVersion.toString() + "]");
+  	 	  
+  	          FBLogging.log(null, "info","Connected to meter on port: " + s);
+  		      }
+  		      else
+  		      {
+  			      /* Set the meter connected flag */
+  			      MeterConnectFlag = false;
+  			  			  
+  			      /* Update the status bar with the meter version */
+    	        StatusBar.setText(StatusStr + " "
+    	            	                      + "Not Connected to Meter"); 
+    	    
+    	        FBLogging.log(null, "severe","Unable to connnect to meter on port: " + s);
+  		      }
+  		  
+          } 
+          catch(Exception e1) 
+          {
+  		      e1.printStackTrace();
+  		    }
+    	     	 
+    	    return;
+        }
+      } 
+      else
       {
-    	//setLabel("Green eggs and... " + s + "!");
-    	return;
+    	  FBLogging.log(null, "warning","Already connected to meter!");	
       }
-
-      //If you're here, the return value was null/empty.
-      //setLabel("Come on, finish the sentence!");	
-    	
-    	
     }
     
     if(Command.equals("Save Power Data"))
@@ -311,63 +384,20 @@ public class lpms extends JFrame implements ActionListener
         
         //This is where a real application would open the file.
         //log.append("Opening: " + file.getName() + "." + newline);
-        lpmslog.log(null, "info","Saving file " + file.getName() + ".");      
-       
-       
-       /* Fire up the comm port */
-        try 
-        {
-		  
-          if(Serial == null)
-          {
-        	(Serial= new FBSerial()).connect("COM3");
-        	FBSerial.SerialWriter("*RST");
-  		    FBSerial.SerialWriter("*TST");
-          }
-		            
-		  FBSerial.SerialWriter("*IDN?");
-		  		  
-		  try 
-		  {
-			Thread.sleep(250);
-		  } 
-		  catch(InterruptedException ie) 
-		  {
-			ie.printStackTrace();  
-		  }
-		  
-		  
-		  String LPMVersion = FBSerial.getReceiveBuffer();
-		  
-		  if(LPMVersion != null)
-		  {
-		    			
-			LPMVersion = LPMVersion.replaceAll("(\\r|\\n)", "").trim();
-			
-			/* Update the status bar with the meter version */
-	        StatusBar.setText(StatusStr + " "
-	             	                    + "Connected to: " 
-	                                    + "[" + LPMVersion.toString() + "]");
-	 	  }
-        } 
-        catch(Exception e1) 
-        {
-		  e1.printStackTrace();
-		}
-        
-        
+        FBLogging.log(null, "info","Saving file " + file.getName() + ".");      
+                 
       } 
       else 
       {
         //log.append("Open command cancelled by user." + newline);
-    	lpmslog.log(null, "warning","Save command cancelled by user.");
+    	  FBLogging.log(null, "warning","Save command cancelled by user.");
       }
     }
     
     if(Command.equals("Plot Power Data"))
     {
       /* Log the plot */
-      lpmslog.log(null, "info","Opening new plot."); 
+      FBLogging.log(null, "info","Opening new plot."); 
             
       
       //FBGraph newplot = new FBGraph();
@@ -385,12 +415,12 @@ public class lpms extends JFrame implements ActionListener
         
         //This is where a real application would open the file.
         //log.append("Opening: " + file.getName() + "." + newline);
-        lpmslog.log(null, "info","Opening file " + file.getName() + ".");      
+        FBLogging.log(null, "info","Opening file " + file.getName() + ".");      
       } 
       else 
       {
         //log.append("Open command cancelled by user." + newline);
-    	lpmslog.log(null, "warning","Open command cancelled by user.");
+    	  FBLogging.log(null, "warning","Open command cancelled by user.");
       }
     }
     
@@ -406,12 +436,12 @@ public class lpms extends JFrame implements ActionListener
         
         //This is where a real application would open the file.
         //log.append("Opening: " + file.getName() + "." + newline);
-        lpmslog.log(null, "info","Opening file " + file.getName() + ".");      
+        FBLogging.log(null, "info","Opening file " + file.getName() + ".");      
       } 
       else 
       {
         //log.append("Open command cancelled by user." + newline);
-    	lpmslog.log(null, "warning","Open command cancelled by user.");
+    	  FBLogging.log(null, "warning","Open command cancelled by user.");
       }
     }
     
@@ -435,57 +465,20 @@ public class lpms extends JFrame implements ActionListener
       System.exit(0);
     }
 
-    /* RollKeyID/OrderID input commands */
+    /* Button input commands */
     if(Command.equals("Process"))
     {
-      
       if(Process.getBackground() == Color.GREEN)  	
       {
         /* Set the button color for processing */
         Process.setBackground(Color.RED);
-      
-        SerialPort serialPort = new SerialPort("COM3");
-        try 
-        {
-          /* Open serial port */
-          serialPort.openPort();
-          
-          /* Set params. Also you can set params by this string: serialPort.setParams(9600, 8, 1, 0); */
-          serialPort.setParams(SerialPort.BAUDRATE_115200, 
-                               SerialPort.DATABITS_8,
-                               SerialPort.STOPBITS_1,
-                               SerialPort.PARITY_NONE);  
-          
-           
-          
-          /* Write data to port */
-          serialPort.writeBytes("*RST\r\n".getBytes());
-          serialPort.writeBytes("*IDN?\r\n".getBytes());
-          
-          /* Read the serial port */
-          byte[] buffer = serialPort.readBytes(10);
-          System.out.print(new String(buffer));
-          
-          /* Close the port */
-          serialPort.closePort();
-        }
-        catch(SerialPortException ex) 
-        {
-          System.out.println(ex);
-        }
-     
-        /* Update the status bar */
-        //StatusBar.setText(StatusStr + " "
-        //		                    + "Running test with " 
-        //                            + "Current step [" + currentval.toString()+ "] Amps "
-        //                            + "and "
-        //                            + "Time step [" + timeval.toString() + "] Minutes");
-      
         
+        /* Update the status bar */
+        //StatusBar.setText(StatusStr + " ");
       }
       else
       {
-    	/* Set the button color for processing */
+    	  /* Set the button color for processing */
         Process.setBackground(Color.GREEN);
                 
         /* Update the status bar */
@@ -517,13 +510,19 @@ public class lpms extends JFrame implements ActionListener
   JLabel Arrow;
   JButton Process;
   JButton NewButton;
- 
+  
+  JMenuItem itemF1;
+  JMenuItem itemF2;
+  JMenuItem itemF3;
+  JMenuItem itemF4;
+  
   /* Vars */
   static FBSerial Serial = null;
+  Boolean MeterConnectFlag = false;
   ImageIcon FirebirdIcon;
   
   FBLogging lpmslog;
-  static private final String newline = "\n";
+  //static private final String newline = "\n";
   String StatusStr = "  Status: ";
   int ScreenWidth = 640;
 

@@ -15,10 +15,11 @@ import gnu.io.CommPort;
 import gnu.io.CommPortIdentifier;
 import gnu.io.SerialPort;
 
-import java.io.FileDescriptor;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.Enumeration;
 
 public class FBSerial
 {
@@ -44,7 +45,10 @@ public class FBSerial
       if(commPort instanceof SerialPort)
       {
         System.out.println("Connect 2/2");
-        SerialPort serialPort = (SerialPort) commPort;
+        
+        serialPort = (SerialPort) commPort;
+        //SerialPort serialPort = (SerialPort) commPort;
+        
         System.out.println("BaudRate: " + serialPort.getBaudRate());
         System.out.println("DataBIts: " + serialPort.getDataBits());
         System.out.println("StopBits: " + serialPort.getStopBits());
@@ -69,6 +73,20 @@ public class FBSerial
         System.out.println("Error: Only serial ports are handled by this example.");
       }
     }     
+  }
+  
+  
+  /* Close the com port */
+  public static void close()
+  {
+    if(serialPort != null)
+    {
+      /* Close serial port */
+      serialPort.close(); 
+    }
+   
+    in = null;        //close input and output streams
+    out = null;
   }
 
   /** */
@@ -163,10 +181,50 @@ public class FBSerial
     }            
   }
   
+  /* */
+  public static ArrayList<String> getCommPorts()
+  {
+    CommPortIdentifier ports = null;      
+    ArrayList<String> comport = new ArrayList<String>();
+        
+    /* Store all available ports */
+    Enumeration portEnum = CommPortIdentifier.getPortIdentifiers(); 
+        
+    while(portEnum.hasMoreElements())
+    {  
+      /* Browse through available ports */
+      ports = (CommPortIdentifier)portEnum.nextElement();
+      //System.out.println("Port: " + ports.getName());
+          
+      /* Following line checks whether there is the port i am looking for and whether it is serial */
+      //if(ports.getPortType() == CommPortIdentifier.PORT_SERIAL&&ports.getName().equals("COM3"))
+      if(ports.getPortType() == CommPortIdentifier.PORT_SERIAL)
+      { 
+    	comport.add(ports.getName());
+    	//System.out.println("Port: " + ports.getName());  
+      }
+    }
+	
+    return comport;
+  }
+  
+   
   /* Get the receive buffer */
   public static String getReceiveBuffer()
   {
 	return(ReceiveBuffer); 
+  }
+  
+  /* Get the receive buffer */
+  public static void setReceiveBuffer(String tstr)
+  {
+	ReceiveBuffer = tstr; 
+  }
+  
+  /* Gets the state of the serial port */
+  public static Boolean getPortState()
+  {
+	return(PortOpen);  
   }
   
   
@@ -180,16 +238,18 @@ public class FBSerial
     }
     catch(Exception e)
     {
-      // TODO Auto-generated catch block
       e.printStackTrace();
     }
   }
   
   
-  private static String ReceiveBuffer;
+  private static Boolean PortOpen = false;
   
+  private static String ReceiveBuffer;
   static InputStream in;
   static OutputStream out;
+  
+  static SerialPort serialPort = null;
   
   public static SerialWriter SW = null;
   public static SerialReader SR = null;
