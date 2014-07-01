@@ -31,153 +31,152 @@ import org.jfree.data.time.TimeSeriesCollection;
 
 public class FBGraph extends JPanel 
 {
-    /** Time series for total memory used. */
-    private TimeSeries total;
+  /** Time series for total memory used. */
+  private TimeSeries total;
 
-    /** Time series for free memory. */
-    private TimeSeries free;
+  /** Time series for free memory. */
+  private TimeSeries free;
+
+  /**
+   * Creates a new application.
+   *
+   * @param maxAge  the maximum age (in milliseconds).
+   */
+  public FBGraph(int maxAge) 
+  {
+    super(new BorderLayout());
+
+    // create two series that automatically discard data more than 30
+    // seconds old...
+    this.total = new TimeSeries("Total Memory");
+    this.total.setMaximumItemAge(maxAge);
+    this.free = new TimeSeries("Free Memory");
+    this.free.setMaximumItemAge(maxAge);
+    TimeSeriesCollection dataset = new TimeSeriesCollection();
+    dataset.addSeries(this.total);
+    dataset.addSeries(this.free);
+
+    DateAxis domain = new DateAxis("Time");
+    NumberAxis range = new NumberAxis("Power");
+    domain.setTickLabelFont(new Font("SansSerif", Font.PLAIN, 12));
+    range.setTickLabelFont(new Font("SansSerif", Font.PLAIN, 12));
+    domain.setLabelFont(new Font("SansSerif", Font.PLAIN, 14));
+    range.setLabelFont(new Font("SansSerif", Font.PLAIN, 14));
+
+    XYItemRenderer renderer = new XYLineAndShapeRenderer(true, false);
+    renderer.setSeriesPaint(0, Color.red);
+    renderer.setSeriesPaint(1, Color.green);
+    renderer.setSeriesStroke(0, new BasicStroke(3f, BasicStroke.CAP_BUTT,
+                             BasicStroke.JOIN_BEVEL));
+    renderer.setSeriesStroke(1, new BasicStroke(3f, BasicStroke.CAP_BUTT,
+                             BasicStroke.JOIN_BEVEL));
+    XYPlot plot = new XYPlot(dataset, domain, range, renderer);
+    domain.setAutoRange(true);
+    domain.setLowerMargin(0.0);
+    domain.setUpperMargin(0.0);
+    domain.setTickLabelsVisible(true);
+
+    range.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
+
+    JFreeChart chart = new JFreeChart("Measured Power",
+                                      new Font("SansSerif", Font.BOLD, 24), plot, true);
+
+    ChartUtilities.applyCurrentTheme(chart);
+
+    ChartPanel chartPanel = new ChartPanel(chart, true);
+    chartPanel.setBorder(BorderFactory.createCompoundBorder(
+                         BorderFactory.createEmptyBorder(4, 4, 4, 4),
+                         BorderFactory.createLineBorder(Color.black)));
+    add(chartPanel);
+
+  }
+
+  /**
+   * Adds an observation to the 'total memory' time series.
+   *
+   * @param y  the total memory used.
+   */
+  private void addTotalObservation(double y) 
+  {
+    this.total.add(new Millisecond(), y);
+  }
+
+  /**
+   * Adds an observation to the 'free memory' time series.
+   *
+   * @param y  the free memory.
+   */
+  private void addFreeObservation(double y) 
+  {
+    this.free.add(new Millisecond(), y);
+  }
+
+  /**
+   * The data generator.
+   */
+  class DataGenerator extends Timer implements ActionListener 
+  {
 
     /**
-     * Creates a new application.
+     * Constructor.
      *
-     * @param maxAge  the maximum age (in milliseconds).
+     * @param interval  the interval (in milliseconds)
      */
-    public FBGraph(int maxAge) 
+    DataGenerator(int interval) 
     {
-        super(new BorderLayout());
-
-        // create two series that automatically discard data more than 30
-        // seconds old...
-        this.total = new TimeSeries("Total Memory");
-        this.total.setMaximumItemAge(maxAge);
-        this.free = new TimeSeries("Free Memory");
-        this.free.setMaximumItemAge(maxAge);
-        TimeSeriesCollection dataset = new TimeSeriesCollection();
-        dataset.addSeries(this.total);
-        dataset.addSeries(this.free);
-
-        DateAxis domain = new DateAxis("Time");
-        NumberAxis range = new NumberAxis("Power");
-        domain.setTickLabelFont(new Font("SansSerif", Font.PLAIN, 12));
-        range.setTickLabelFont(new Font("SansSerif", Font.PLAIN, 12));
-        domain.setLabelFont(new Font("SansSerif", Font.PLAIN, 14));
-        range.setLabelFont(new Font("SansSerif", Font.PLAIN, 14));
-
-        XYItemRenderer renderer = new XYLineAndShapeRenderer(true, false);
-        renderer.setSeriesPaint(0, Color.red);
-        renderer.setSeriesPaint(1, Color.green);
-        renderer.setSeriesStroke(0, new BasicStroke(3f, BasicStroke.CAP_BUTT,
-                                 BasicStroke.JOIN_BEVEL));
-        renderer.setSeriesStroke(1, new BasicStroke(3f, BasicStroke.CAP_BUTT,
-                                 BasicStroke.JOIN_BEVEL));
-        XYPlot plot = new XYPlot(dataset, domain, range, renderer);
-        domain.setAutoRange(true);
-        domain.setLowerMargin(0.0);
-        domain.setUpperMargin(0.0);
-        domain.setTickLabelsVisible(true);
-
-        range.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
-
-        JFreeChart chart = new JFreeChart("Measured Power",
-                                          new Font("SansSerif", Font.BOLD, 24), plot, true);
-
-        ChartUtilities.applyCurrentTheme(chart);
-
-        ChartPanel chartPanel = new ChartPanel(chart, true);
-        chartPanel.setBorder(BorderFactory.createCompoundBorder(
-                             BorderFactory.createEmptyBorder(4, 4, 4, 4),
-                             BorderFactory.createLineBorder(Color.black)));
-        add(chartPanel);
-
+      super(interval, null);
+      addActionListener(this);
     }
 
     /**
-     * Adds an observation to the 'total memory' time series.
+     * Adds a new free/total memory reading to the dataset.
      *
-     * @param y  the total memory used.
+     * @param event  the action event.
      */
-    private void addTotalObservation(double y) 
+    public void actionPerformed(ActionEvent event) 
     {
-        this.total.add(new Millisecond(), y);
+      long f = Runtime.getRuntime().freeMemory();
+      long t = Runtime.getRuntime().totalMemory();
+      addTotalObservation(t);
+      addFreeObservation(f);
     }
 
-    /**
-     * Adds an observation to the 'free memory' time series.
-     *
-     * @param y  the free memory.
-     */
-    private void addFreeObservation(double y) 
-    {
-        this.free.add(new Millisecond(), y);
-    }
+  }
 
-    /**
-     * The data generator.
-     */
-    class DataGenerator extends Timer implements ActionListener 
-    {
-
-        /**
-         * Constructor.
-         *
-         * @param interval  the interval (in milliseconds)
-         */
-        DataGenerator(int interval) 
-        {
-            super(interval, null);
-            addActionListener(this);
-        }
-
-        /**
-         * Adds a new free/total memory reading to the dataset.
-         *
-         * @param event  the action event.
-         */
-        public void actionPerformed(ActionEvent event) 
-        {
-            long f = Runtime.getRuntime().freeMemory();
-            long t = Runtime.getRuntime().totalMemory();
-            addTotalObservation(t);
-            addFreeObservation(f);
-        }
-
-    }
-
-    /**
-     * Opens the plot window and starts the plot 
-     */
-    public static void plot()
-    {
-    	JFrame frame = new JFrame("Laser Power");
-        FBGraph panel = new FBGraph(30000);
-        frame.getContentPane().add(panel, BorderLayout.CENTER);
-        frame.setBounds(200, 120, 1000, 480);
-        frame.setVisible(true);
-        panel.new DataGenerator(100).start();
-    }
+  /**
+   * Opens the plot window and starts the plot 
+   */
+  public static void plot()
+  {
+  	JFrame frame = new JFrame("Laser Power");
+    FBGraph panel = new FBGraph(30000);
+    frame.getContentPane().add(panel, BorderLayout.CENTER);
+    frame.setBounds(200, 120, 1000, 480);
+    frame.setVisible(true);
+    panel.new DataGenerator(100).start();
+  }
     
     
-    /**
-     * Entry point for the sample application.
-     *
-     * @param args  ignored.
-     */
-    public static void main(String[] args) 
+  /**
+   * Entry point for the sample application.
+   *
+   * @param args  ignored.
+   */
+  public static void main(String[] args) 
+  {
+    JFrame frame = new JFrame("Laser Power");
+    FBGraph panel = new FBGraph(30000);
+    frame.getContentPane().add(panel, BorderLayout.CENTER);
+    frame.setBounds(200, 120, 1000, 580);
+    frame.setVisible(true);
+    panel.new DataGenerator(100).start();
+
+    frame.addWindowListener(new WindowAdapter() 
     {
-        JFrame frame = new JFrame("Laser Power");
-        FBGraph panel = new FBGraph(30000);
-        frame.getContentPane().add(panel, BorderLayout.CENTER);
-        frame.setBounds(200, 120, 1000, 580);
-        frame.setVisible(true);
-        panel.new DataGenerator(100).start();
-
-        frame.addWindowListener(new WindowAdapter() 
-        {
-            public void windowClosing(WindowEvent e) 
-            {
-                System.exit(0);
-            }
-        });
-    }
-
+      public void windowClosing(WindowEvent e) 
+      {
+        System.exit(0);
+      }
+    });
+  }
 }
