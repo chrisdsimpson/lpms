@@ -48,12 +48,12 @@ public class FBGraph extends JPanel
 
     // create two series that automatically discard data more than 30
     // seconds old...
-    this.total = new TimeSeries("Total Memory");
-    this.total.setMaximumItemAge(maxAge);
-    this.free = new TimeSeries("Free Memory");
+    //this.total = new TimeSeries("Total Memory");
+    //this.total.setMaximumItemAge(maxAge);
+    this.free = new TimeSeries("Measured Power");
     this.free.setMaximumItemAge(maxAge);
     TimeSeriesCollection dataset = new TimeSeriesCollection();
-    dataset.addSeries(this.total);
+    //dataset.addSeries(this.total);
     dataset.addSeries(this.free);
 
     DateAxis domain = new DateAxis("Time");
@@ -135,10 +135,14 @@ public class FBGraph extends JPanel
      */
     public void actionPerformed(ActionEvent event) 
     {
-      long f = Runtime.getRuntime().freeMemory();
-      long t = Runtime.getRuntime().totalMemory();
-      addTotalObservation(t);
-      addFreeObservation(f);
+        	
+    	double p = Double.parseDouble(FBSerial.getReceiveBuffer());
+    	addFreeObservation(p);
+    	    	
+    	//long f = Runtime.getRuntime().freeMemory();
+      //long t = Runtime.getRuntime().totalMemory();
+      //addFreeObservation(f);
+      //addTotalObservation(t);
     }
 
   }

@@ -14,19 +14,24 @@ package lpms;
 import gnu.io.CommPort;
 import gnu.io.CommPortIdentifier;
 import gnu.io.SerialPort;
+import gnu.io.SerialPortEvent;
+import gnu.io.SerialPortEventListener;
 
+import java.io.InputStreamReader;
+import java.io.BufferedReader; 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Enumeration;
 
-public class FBSerial
+public class FBSerial implements SerialPortEventListener
 {
     
   public FBSerial()
   {
     super();
+    ReceiveBuffer = "";
   }
 
   /* Configure the serial port */
@@ -49,11 +54,11 @@ public class FBSerial
         serialPort = (SerialPort) commPort;
         //SerialPort serialPort = (SerialPort) commPort;
         
-        System.out.println("BaudRate: " + serialPort.getBaudRate());
-        System.out.println("DataBIts: " + serialPort.getDataBits());
-        System.out.println("StopBits: " + serialPort.getStopBits());
-        System.out.println("Parity: " + serialPort.getParity());
-        System.out.println("FlowControl: " + serialPort.getFlowControlMode());
+        //System.out.println("BaudRate: " + serialPort.getBaudRate());
+        //System.out.println("DataBIts: " + serialPort.getDataBits());
+        //System.out.println("StopBits: " + serialPort.getStopBits());
+        //System.out.println("Parity: " + serialPort.getParity());
+        //System.out.println("FlowControl: " + serialPort.getFlowControlMode());
         serialPort.setSerialPortParams(115200, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_ODD);
         //serialPort.setFlowControlMode(SerialPort.FLOWCONTROL_RTSCTS_IN);
         System.out.println("BaudRate: " + serialPort.getBaudRate());
@@ -62,11 +67,28 @@ public class FBSerial
         System.out.println("Parity: " + serialPort.getParity());
         System.out.println("FlowControl: " + serialPort.getFlowControlMode());
         
-        in = serialPort.getInputStream();
+        //in = serialPort.getInputStream();
         out = serialPort.getOutputStream();
         
-        (TSR = new Thread(SR = new SerialReader(in))).start();
+        //(TSR = new Thread(SR = new SerialReader(in))).start();
         //(TSW = new Thread(SW = new SerialWriter(out))).start();
+        
+        //input and output channels
+        try
+        {
+          //defining reader and output stream
+          input = new BufferedReader(new InputStreamReader(serialPort.getInputStream()));
+          //output =  serialPort.getOutputStream();
+          //adding listeners to input and output streams
+          serialPort.addEventListener(this);
+          serialPort.notifyOnDataAvailable(true);
+          //serialPort.notifyOnOutputEmpty(true);
+        }
+        catch(Exception e)
+        {
+          System.out.println(e.toString());
+        }
+           
       }
       else
       {
@@ -181,6 +203,33 @@ public class FBSerial
     }            
   }
   
+ 
+  /* Serial port event handler */
+  public void serialEvent(SerialPortEvent evt) 
+  { 
+    /* If data available on serial port */
+  	if(evt.getEventType() == SerialPortEvent.DATA_AVAILABLE) 
+    { 
+    	try 
+    	{
+        String inputLine = input.readLine();
+        System.out.println("New Data: " + inputLine);
+        ReceiveBuffer = inputLine;
+        
+        //inputName = new Scanner(System.in); //get user name
+        //name = inputName.nextLine();
+        //name = name + '\n';
+        //System.out.printf("%s",name);
+        //output.write(name.getBytes());     //sends the user name
+      } 
+      catch(Exception e) 
+      {
+      	e.printStackTrace();
+      }
+    }
+  }
+  
+  
   /* */
   public static ArrayList<String> getCommPorts()
   {
@@ -212,19 +261,19 @@ public class FBSerial
   /* Get the receive buffer */
   public static String getReceiveBuffer()
   {
-	return(ReceiveBuffer); 
+	  return(ReceiveBuffer); 
   }
   
   /* Get the receive buffer */
   public static void setReceiveBuffer(String tstr)
   {
-	ReceiveBuffer = tstr; 
+	  ReceiveBuffer = tstr; 
   }
   
   /* Gets the state of the serial port */
   public static Boolean getPortState()
   {
-	return(PortOpen);  
+	  return(PortOpen);  
   }
   
   
@@ -248,6 +297,9 @@ public class FBSerial
   private static String ReceiveBuffer;
   static InputStream in;
   static OutputStream out;
+  
+  private BufferedReader input;            
+  private OutputStream output; 
   
   static SerialPort serialPort = null;
   

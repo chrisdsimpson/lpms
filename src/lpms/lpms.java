@@ -298,34 +298,32 @@ public class lpms extends JFrame implements ActionListener
         if((s != null) && (s.length() > 0)) 
         {
     
-   	      /* Try to connect to the serial/comm port */
+   	      /* Try to connect to the serial port */
           try 
           {
-  		      if(Serial == null)
-            {
-          	  (Serial= new FBSerial()).connect(s);
-          	  FBSerial.SerialWriter("*RST");
-    	        FBSerial.SerialWriter("*TST");
-            }
-  		  
-  		      /* Clear the receive buffer */
-  		      FBSerial.setReceiveBuffer("");
-  		  
-  		      /* Write to the meter to get the version string back */
-  		      FBSerial.SerialWriter("*IDN?");
-  		  		  
-  		      try 
+  		      (Serial= new FBSerial()).connect(s);
+          	FBSerial.SerialWriter("*RST");
+    	      FBSerial.SerialWriter("*TST");
+           
+  		      /* Loop for a few times and try to get the connection string from ther meter */
+  		      for(int i = 0; i < 10 && !FBSerial.getReceiveBuffer().contains("Firebird"); i++)
   		      {
-  			      Thread.sleep(250);
-  		      } 
-  		      catch(InterruptedException ie) 
-  		      {
-  			      ie.printStackTrace();  
+  		      	FBSerial.SerialWriter("*IDN?");
+  		      	
+  		      	try 
+    		      {
+    			      Thread.sleep(250);
+    		      } 
+    		      catch(InterruptedException ie) 
+    		      {
+    			      ie.printStackTrace();  
+    		      }
+  		      		      	
   		      }
-  		  
-    		    String LPMVersion = FBSerial.getReceiveBuffer();
-  		  
-  		      if(LPMVersion != null && LPMVersion.contains("irebird"))
+    		      
+  		      String LPMVersion = FBSerial.getReceiveBuffer();
+  		      
+  		      if(LPMVersion != null && LPMVersion.contains("Firebird"))
   		      {
   			
   			      /* Set the meter connected flag */
@@ -350,7 +348,9 @@ public class lpms extends JFrame implements ActionListener
   		      {
   			      /* Set the meter connected flag */
   			      MeterConnectFlag = false;
-  			  			  
+  			  		
+  			      FBSerial.close();	  
+  			      
   			      /* Update the status bar with the meter version */
     	        StatusBar.setText(StatusStr + " "
     	            	                      + "Not Connected to Meter"); 
@@ -371,6 +371,32 @@ public class lpms extends JFrame implements ActionListener
       {
     	  FBLogging.log(null, "warning","Already connected to meter!");	
       }
+    }
+    
+    if(Command.equals("Plot Power Data"))
+    {
+      if(MeterConnectFlag)
+    	{
+    	  /* Log the plot */
+        FBLogging.log(null, "info","Opening new plot."); 
+        
+        FBSerial.setReceiveBuffer("");
+        
+        try 
+        {
+        	/* Arm the meter for continuse readings */
+        	FBSerial.SerialWriter("ARM:POW");
+        	
+        	/* Start the data stream */
+        	FBSerial.SerialWriter("INIT:CONT ON");
+        }
+        catch(Exception e1) 
+        {
+		      e1.printStackTrace();
+		    }
+        //FBGraph newplot = new FBGraph();
+        FBGraph.plot();
+    	}
     }
     
     if(Command.equals("Save Power Data"))
@@ -394,16 +420,6 @@ public class lpms extends JFrame implements ActionListener
       }
     }
     
-    if(Command.equals("Plot Power Data"))
-    {
-      /* Log the plot */
-      FBLogging.log(null, "info","Opening new plot."); 
-            
-      
-      //FBGraph newplot = new FBGraph();
-      FBGraph.plot();
-    }
-    
     if(Command.equals("Upload Tables"))
     {
       final JFileChooser fc = new JFileChooser();	
@@ -423,8 +439,7 @@ public class lpms extends JFrame implements ActionListener
     	  FBLogging.log(null, "warning","Open command cancelled by user.");
       }
     }
-    
-    
+       
     if(Command.equals("Upload Meter Firmware"))
     {
       final JFileChooser fc = new JFileChooser();	
