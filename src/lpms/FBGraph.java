@@ -10,6 +10,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
@@ -135,10 +141,11 @@ public class FBGraph extends JPanel
      */
     public void actionPerformed(ActionEvent event) 
     {
-        	
+    	String timeStamp = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Calendar.getInstance().getTime());  	
     	double p = Double.parseDouble(FBSerial.getReceiveBuffer());
     	addFreeObservation(p);
-    	    	
+    	pw.println(timeStamp + ", " + p);
+    	
     	//long f = Runtime.getRuntime().freeMemory();
       //long t = Runtime.getRuntime().totalMemory();
       //addFreeObservation(f);
@@ -152,12 +159,52 @@ public class FBGraph extends JPanel
    */
   public static void plot()
   {
+  	
+  	String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
+  	file = new File("lpmsdata_" + timeStamp + ".csv");
+  	  	
+  	try 
+  	{
+      fw = new FileWriter(file, true);
+      pw = new PrintWriter(fw);
+    } 
+  	catch(IOException e) 
+  	{
+      e.printStackTrace();
+    } 
+  		
   	JFrame frame = new JFrame("Laser Power");
     FBGraph panel = new FBGraph(30000);
     frame.getContentPane().add(panel, BorderLayout.CENTER);
     frame.setBounds(200, 120, 1000, 480);
     frame.setVisible(true);
     panel.new DataGenerator(100).start();
+    
+    frame.addWindowListener(new WindowAdapter() 
+    {
+      public void windowClosing(WindowEvent e) 
+      {
+      	/* Stop the meter from sending data */
+      	FBSerial.SerialWriter("*RST");
+      	
+      	if(pw != null) 
+      	{
+          pw.close();
+        }
+      	
+      	if(fw != null) 
+      	{
+          try
+					{
+						fw.close();
+					} 
+          catch (IOException e1)
+					{
+						e1.printStackTrace();
+					}
+        }
+      }
+    });
   }
     
     
@@ -183,4 +230,12 @@ public class FBGraph extends JPanel
       }
     });
   }
+
+  static File file = null;
+	static FileWriter fw = null;
+	static PrintWriter pw = null;
+	
+
 }
+
+

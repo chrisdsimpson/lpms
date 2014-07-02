@@ -124,7 +124,7 @@ public class FBLogging
           
           if(!msg.equals(""))
           {   
-        	JOptionPane.showMessageDialog(null, msg, "Error", JOptionPane.ERROR_MESSAGE);
+        	  JOptionPane.showMessageDialog(null, msg, "Error", JOptionPane.ERROR_MESSAGE);
           }
        	break;
       
@@ -133,7 +133,7 @@ public class FBLogging
           
           if(!msg.equals(""))
           {  
-        	JOptionPane.showMessageDialog(null, msg, "Warning", JOptionPane.WARNING_MESSAGE);
+        	  JOptionPane.showMessageDialog(null, msg, "Warning", JOptionPane.WARNING_MESSAGE);
           }
         break;
         
@@ -142,7 +142,7 @@ public class FBLogging
            
           if(!msg.equals(""))
           {    
-        	JOptionPane.showMessageDialog(null, msg, "Info", JOptionPane.INFORMATION_MESSAGE);
+        	  JOptionPane.showMessageDialog(null, msg, "Info", JOptionPane.INFORMATION_MESSAGE);
           }       
         break;
      
