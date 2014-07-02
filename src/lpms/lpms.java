@@ -305,7 +305,7 @@ public class lpms extends JFrame implements ActionListener
           	FBSerial.SerialWriter("*RST");
     	      FBSerial.SerialWriter("*TST");
            
-  		      /* Loop for a few times and try to get the connection string from ther meter */
+  		      /* Loop for a few times and try to get the connection string from the meter */
   		      for(int i = 0; i < 10 && !FBSerial.getReceiveBuffer().contains("Firebird"); i++)
   		      {
   		      	FBSerial.SerialWriter("*IDN?");

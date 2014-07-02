@@ -215,12 +215,6 @@ public class FBSerial implements SerialPortEventListener
         String inputLine = input.readLine();
         System.out.println("New Data: " + inputLine);
         ReceiveBuffer = inputLine;
-        
-        //inputName = new Scanner(System.in); //get user name
-        //name = inputName.nextLine();
-        //name = name + '\n';
-        //System.out.printf("%s",name);
-        //output.write(name.getBytes());     //sends the user name
       } 
       catch(Exception e) 
       {
@@ -249,8 +243,8 @@ public class FBSerial implements SerialPortEventListener
       //if(ports.getPortType() == CommPortIdentifier.PORT_SERIAL&&ports.getName().equals("COM3"))
       if(ports.getPortType() == CommPortIdentifier.PORT_SERIAL)
       { 
-    	comport.add(ports.getName());
-    	//System.out.println("Port: " + ports.getName());  
+    	  comport.add(ports.getName());
+    	  //System.out.println("Port: " + ports.getName());  
       }
     }
 	
