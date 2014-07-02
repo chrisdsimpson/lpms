@@ -141,7 +141,7 @@ public class FBGraph extends JPanel
      */
     public void actionPerformed(ActionEvent event) 
     {
-    	String timeStamp = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Calendar.getInstance().getTime());  	
+    	String timeStamp = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss:SSS").format(Calendar.getInstance().getTime());  	
     	double p = Double.parseDouble(FBSerial.getReceiveBuffer());
     	addFreeObservation(p);
     	pw.println(timeStamp + ", " + p);
