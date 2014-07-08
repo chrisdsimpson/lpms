@@ -108,7 +108,7 @@ public class lpms extends JFrame implements ActionListener
 	  gbc = new GridBagConstraints();
 	  gbc.gridx = 4;
 	  gbc.gridy = 0;
-	  TopPanel.add(Process, gbc);
+	  //TopPanel.add(Process, gbc);
 	  getContentPane().add(TopPanel);
 
 	  /* Add the center panel for spacing */
@@ -167,9 +167,9 @@ public class lpms extends JFrame implements ActionListener
     
     JMenuItem itemAPD2 = new JMenuItem("Save Power Data");
     itemAPD2.addActionListener(this);
+    itemAPD2.setEnabled(false);
     itemF2.add(itemAPD2);
       
-    
     /* Add the Plot menu item */
     itemF3= new JMenuItem("Upload Tables");
     itemF3.addActionListener(this);
@@ -231,7 +231,7 @@ public class lpms extends JFrame implements ActionListener
       public void windowClosing(WindowEvent evt)
       {
         /* Add any cleanup code here */
-    	System.exit(0);
+    	  System.exit(0);
 	
       }
       public void windowOpened(WindowEvent evt)

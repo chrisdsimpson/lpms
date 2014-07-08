@@ -33,7 +33,7 @@ import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.time.Millisecond;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
-
+import org.jfree.chart.axis.NumberTickUnit;
 
 public class FBGraph extends JPanel 
 {
@@ -56,7 +56,7 @@ public class FBGraph extends JPanel
     // seconds old...
     //this.total = new TimeSeries("Total Memory");
     //this.total.setMaximumItemAge(maxAge);
-    this.free = new TimeSeries("Measured Power");
+    this.free = new TimeSeries("Measured Power in Watts");
     this.free.setMaximumItemAge(maxAge);
     TimeSeriesCollection dataset = new TimeSeriesCollection();
     //dataset.addSeries(this.total);
@@ -84,6 +84,9 @@ public class FBGraph extends JPanel
 
     range.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
 
+    //range.setRange(0.0, 1.0);
+    range.setTickUnit(new NumberTickUnit(0.1));
+    
     JFreeChart chart = new JFreeChart("Measured Power",
                                       new Font("SansSerif", Font.BOLD, 24), plot, true);
 
