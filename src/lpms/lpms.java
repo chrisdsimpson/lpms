@@ -427,16 +427,21 @@ public class lpms extends JFrame implements ActionListener
     
       if (returnVal == JFileChooser.APPROVE_OPTION) 
       {
-        File file = fc.getSelectedFile();
+        // Get the file handle file.
+      	File file = fc.getSelectedFile();
         
-        //This is where a real application would open the file.
-        //log.append("Opening: " + file.getName() + "." + newline);
-        FBLogging.log(null, "info","Opening file " + file.getName() + ".");      
+        // Log the event
+        FBLogging.log(null, "info","Opening file " + file.getName() + ".");  
+        
+        // Tell the meter that a table file is coming.
+        FBSerial.SerialWriter("MEM:COPY:TABL");
+        
+        
+        
       } 
       else 
       {
-        //log.append("Open command cancelled by user." + newline);
-    	  FBLogging.log(null, "warning","Open command cancelled by user.");
+        //FBLogging.log(null, "warning","Open command cancelled by user.");
       }
     }
        
