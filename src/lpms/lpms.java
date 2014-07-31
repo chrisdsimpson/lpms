@@ -17,6 +17,10 @@ import javax.swing.*;
 
 import java.awt.event.*;
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Scanner;
+
 import javax.swing.ImageIcon;
 
 
@@ -433,9 +437,23 @@ public class lpms extends JFrame implements ActionListener
         // Log the event
         FBLogging.log(null, "info","Opening file " + file.getName() + ".");  
         
+        // Erase all the tables.
+        FBSerial.SerialWriter("MEM:ERAS:ALL");
+                
         // Tell the meter that a table file is coming.
-        FBSerial.SerialWriter("MEM:COPY:TABL");
+        //FBSerial.SerialWriter("MEM:COPY:TABL");
         
+        String text;
+				try
+				{
+					text = new Scanner(file).useDelimiter("\\A").next();
+					//FBSerial.SerialWriter(text); 				
+				} 
+				catch(FileNotFoundException e1)
+				{
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
         
         
       } 
@@ -508,9 +526,15 @@ public class lpms extends JFrame implements ActionListener
     
     /* Other commands */
   }
-   
-
   
+  
+  /* Read all file into a string */
+  static String readFile(String path) throws IOException 
+  {
+  	byte[] encoded = Files.readAllBytes(Paths.get(path));
+    return new String(encoded);
+  }
+    
   /* Controls */
   JPanel TopPanel;
   JPanel CenterPanel;
