@@ -110,7 +110,7 @@ public class FBLogging
     try 
     {
       /* This block configure the logger with handler and formatter */
-      fh = new FileHandler("lpms.log", true);
+      fh = new FileHandler("C:\\Users\\Public\\Documents\\lpms.log", true);
       logger.addHandler(fh);
       logger.setLevel(Level.ALL);
       SimpleFormatter formatter = new SimpleFormatter();

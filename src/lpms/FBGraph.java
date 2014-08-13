@@ -164,7 +164,7 @@ public class FBGraph extends JPanel
   {
   	
   	String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
-  	file = new File("lpmsdata_" + timeStamp + ".csv");
+  	file = new File("C:\\Users\\Public\\Documents\\lpmsdata_" + timeStamp + ".csv");
   	  	
   	try 
   	{

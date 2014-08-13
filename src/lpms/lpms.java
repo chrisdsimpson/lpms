@@ -336,8 +336,8 @@ public class lpms extends JFrame implements ActionListener
   			      /* Enable and disable the menus based on the meter connection */
   			      itemF1.setEnabled(false);
   			      itemF2.setEnabled(true);
-  			      itemF3.setEnabled(true);
-  			      itemF4.setEnabled(true);
+  			      itemF3.setEnabled(false);
+  			      itemF4.setEnabled(false);
   			      
   			      LPMVersion = LPMVersion.replaceAll("(\\r|\\n)", "").trim();
   			
