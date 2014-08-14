@@ -85,7 +85,7 @@ public class FBGraph extends JPanel
     range.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
 
     //range.setRange(0.0, 1.0);
-    range.setTickUnit(new NumberTickUnit(0.1));
+    range.setTickUnit(new NumberTickUnit(0.001));
     
     JFreeChart chart = new JFreeChart("Measured Power",
                                       new Font("SansSerif", Font.BOLD, 24), plot, true);
